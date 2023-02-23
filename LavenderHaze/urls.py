@@ -23,4 +23,5 @@ urlpatterns = [
     path('', views.ghome,name='ghome'),
     path('accounts/', include('accounts.urls')),
     path('store/', include('store.urls')),
+    path('cart/', include('carts.urls')),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

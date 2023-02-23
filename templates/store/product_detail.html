@@ -61,21 +61,24 @@
                         </div>
                         <!-- Product Variable Single Item -->
                         <div class="d-flex align-items-center ">
-                            <div class="variable-single-item ">
-                                <span>Quantity</span>
-                                <div class="product-variable-quantity">
-                                    <input min="1" max="100" value="1" type="number">
-                                </div>
-                            </div>
-
                             <div class="product-add-to-cart-btn">
                                 {% if single_product.stock <= 0 %}
                                 <h3><b> Out of stock </b></h3>
                                 {% else %}
-                                <a href="#" class="btn btn-block btn-lg btn-black-default-hover"
-                                    data-bs-toggle="modal" data-bs-target="#modalAddcart">+ Add To Cart</a>
+                                {% if in_cart %}
+                               
+                                <a href="#" class="btn  btn btn-black-default-hover">Added To Cart</a>
+                                <a href="{% url 'cart' %}" class="btn  btn btn-black-default-hover"> View Cart</a>
+
+                                {% else %}
+                                <a href="{% url 'add_cart' single_product.id  %}" class="btn btn-block btn-lg btn-black-default-hover">+ Add To Cart</a>
+                                {% endif %}
                                 {% endif %}
                             </div>
+                           
+                            </div>
+
+          
                         </div>
                         <!-- Start  Product Details Meta Area-->
                         <div class="product-details-meta mb-20">

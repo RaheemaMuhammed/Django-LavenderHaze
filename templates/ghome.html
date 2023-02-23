@@ -50,22 +50,7 @@
                                        
                                     </li> 
                                     {% endfor %}
-                                    <!-- <li class="has-dropdown">
-                                        <a href="#" style="color: #51135c;" >Rootstock <i
-                                                class="fa fa-angle-down"></i></a>
-                                        
-                                       
-                                    </li>
-                                    <li class="has-dropdown">
-                                        <a href="#" style="color: #51135c;" >Fertilizers <i
-                                                class="fa fa-angle-down"></i></a>
-                                       
-                                    </li>
-                                    <li class="has-dropdown">
-                                        <a href="#" style="color: #51135c;" >Garden Decor <i class="fa fa-angle-down"></i></a>
-                                      
-                                       
-                                    </li> -->
+                                  
                                     <li>
                                         <a href="#" style="color: #51135c;" >About Us</a>
                                     </li>
@@ -78,16 +63,12 @@
 
                             <!-- Start Header Action Link -->
                             <ul class="header-action-link action-color--black action-hover-color--golden">
-                                <li>
+                                <!-- <li>
                                     <a href="#offcanvas-wishlish" class="offcanvas-toggle">
                                         <i style="color: #CC76DA;" class="icon-heart"></i>
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#offcanvas-add-cart" class="offcanvas-toggle">
-                                        <i style="color: #CC76DA;" class="icon-bag"></i>
-                                    </a>
-                                </li>
+                                </li> -->
+                                
                                    {% if user.id is None %}
 
                                 <li>
@@ -98,17 +79,28 @@
                                 </li>
                                 {% else %}
                                 <li>
+                                    <a href="{% url 'cart' %}">
+                                        <i style="color: #CC76DA;" class="icon-bag"></i>
+                                        <span style="background-color: #CC76DA;" class="item-count">{{ cart_count }}</span>
+
+                                    </a>
+                                </li>
+
+
+                                <li>
                                     <a href="{% url 'profile' %}" >
                                         <i style="color: #CC76DA;" class="icon-user"></i>
                                        
                                     </a>
                                 </li>
-                                {% endif %}
                                 <li>
                                     <a href="#search">
                                         <i style="color: #CC76DA;" class="icon-magnifier"></i>
                                     </a>
                                 </li>
+
+                                {% endif %}
+                               
                                 <li>
                                     <a href="#offcanvas-about" class="offacnvas offside-about offcanvas-toggle">
                                         <i style="color: #CC76DA;" class="icon-menu"></i>
@@ -146,23 +138,9 @@
                     <!-- Start Mobile Right Side -->
                     <div class="mobile-right-side">
                         <ul class="header-action-link action-color--black action-hover-color--golden">
-                            <li>
-                                <a href="#search">
-                                    <i style="color: #CC76DA;" class="icon-magnifier"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#offcanvas-wishlish" class="offcanvas-toggle">
-                                    <i style="color: #CC76DA;" class="icon-heart"></i>
-                                    <!-- <span style="background-color: #CC76DA;" class="item-count">3</span> -->
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#offcanvas-add-cart" class="offcanvas-toggle">
-                                    <i style="color: #CC76DA;" class="icon-bag"></i>
-                                    <!-- <span style="background-color: #CC76DA;" class="item-count">3</span> -->
-                                </a>
-                            </li>
+                            
+                           
+                          
                             {% if user.id is None %}
                             <li>
                                 <a href="{% url 'signup' %}" class="offcanvas-toggle">
@@ -172,9 +150,20 @@
                             </li>
                             {% else %}
                             <li>
+                                <a href="{% url 'cart' %}" class="offcanvas-toggle">
+                                    <i style="color: #CC76DA;" class="icon-bag"></i>
+                                    <span style="background-color: #CC76DA;" class="item-count">{{ cart_count }}</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{% url 'profile' %}" class="offcanvas-toggle">
                                     <i style="color: #CC76DA;" class="icon-user"></i>
          
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#search">
+                                    <i style="color: #CC76DA;" class="icon-magnifier"></i>
                                 </a>
                             </li>
                             {% endif %}
@@ -256,14 +245,15 @@
     </div> <!-- ...:::: End Offcanvas Mobile Menu Section:::... -->
 
     <!-- Start Offcanvas Addcart Section -->
-    <div id="offcanvas-add-cart" class="offcanvas offcanvas-rightside offcanvas-add-cart-section" style="background-color:#EAEBFF !important;">
+    <!-- <div id="offcanvas-add-cart" class="offcanvas offcanvas-rightside offcanvas-add-cart-section" style="background-color:#EAEBFF !important;"> -->
         <!-- Start Offcanvas Header -->
-        <div class="offcanvas-header text-right">
+        <!-- <div class="offcanvas-header text-right">
             <button class="offcanvas-close"><i class="ion-android-close"></i></button>
-        </div> <!-- End Offcanvas Header -->
+        </div>  -->
+        <!-- End Offcanvas Header -->
 
         <!-- Start  Offcanvas Addcart Wrapper -->
-        <div class="offcanvas-add-cart-wrapper">
+        <!-- <div class="offcanvas-add-cart-wrapper">
             <h4 class="offcanvas-title">Shopping Cart</h4>
             <ul class="offcanvas-cart">
                 <li class="offcanvas-cart-item-single">
@@ -329,9 +319,11 @@
                 <li><a href="cart.html" class="btn btn-block btn-golden">View Cart</a></li>
                 <li><a href="compare.html" class=" btn btn-block btn-golden mt-5">Checkout</a></li>
             </ul>
-        </div> <!-- End  Offcanvas Addcart Wrapper -->
+        </div>  -->
+        <!-- End  Offcanvas Addcart Wrapper -->
 
-    </div> <!-- End  Offcanvas Addcart Section -->
+    <!-- </div> -->
+     <!-- End  Offcanvas Addcart Section -->
 
     <!-- Start Offcanvas Mobile Menu Section -->
     <div id="offcanvas-wishlish" class="offcanvas offcanvas-rightside offcanvas-add-cart-section" style="background-color:#EAEBFF !important;">
@@ -341,76 +333,15 @@
         </div> <!-- ENd Offcanvas Header -->
 
         <!-- Start Offcanvas Mobile Menu Wrapper -->
-        <div class="offcanvas-wishlist-wrapper">
-            <h4 class="offcanvas-title">Wishlist</h4>
-            <ul class="offcanvas-wishlist">
-                <li class="offcanvas-wishlist-item-single">
-                    <div class="offcanvas-wishlist-item-block">
-                        <a href="#" class="offcanvas-wishlist-item-image-link">
-                            <img src="assets/images/product/default/home-1/default-1.jpg" alt=""
-                                class="offcanvas-wishlist-image">
-                        </a>
-                        <div class="offcanvas-wishlist-item-content">
-                            <a href="#" class="offcanvas-wishlist-item-link">Car Wheel</a>
-                            <div class="offcanvas-wishlist-item-details">
-                                <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
-                                <span class="offcanvas-wishlist-item-details-price">$49.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="offcanvas-wishlist-item-delete text-right">
-                        <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                    </div>
-                </li>
-                <li class="offcanvas-wishlist-item-single">
-                    <div class="offcanvas-wishlist-item-block">
-                        <a href="#" class="offcanvas-wishlist-item-image-link">
-                            <img src="assets/images/product/default/home-2/default-1.jpg" alt=""
-                                class="offcanvas-wishlist-image">
-                        </a>
-                        <div class="offcanvas-wishlist-item-content">
-                            <a href="#" class="offcanvas-wishlist-item-link">Car Vails</a>
-                            <div class="offcanvas-wishlist-item-details">
-                                <span class="offcanvas-wishlist-item-details-quantity">3 x </span>
-                                <span class="offcanvas-wishlist-item-details-price">$500.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="offcanvas-wishlist-item-delete text-right">
-                        <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                    </div>
-                </li>
-                <li class="offcanvas-wishlist-item-single">
-                    <div class="offcanvas-wishlist-item-block">
-                        <a href="#" class="offcanvas-wishlist-item-image-link">
-                            <img src="assets/images/product/default/home-3/default-1.jpg" alt=""
-                                class="offcanvas-wishlist-image">
-                        </a>
-                        <div class="offcanvas-wishlist-item-content">
-                            <a href="#" class="offcanvas-wishlist-item-link">Shock Absorber</a>
-                            <div class="offcanvas-wishlist-item-details">
-                                <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
-                                <span class="offcanvas-wishlist-item-details-price">$350.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="offcanvas-wishlist-item-delete text-right">
-                        <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="offcanvas-wishlist-action-button">
-                <li><a href="#" class="btn btn-block btn-golden">View wishlist</a></li>
-            </ul>
-        </div> <!-- End Offcanvas Mobile Menu Wrapper -->
+        <!-- End Offcanvas Mobile Menu Wrapper -->
 
     </div> <!-- End Offcanvas Mobile Menu Section -->
 
     <!-- Start Offcanvas Search Bar Section -->
     <div id="search" class="search-modal" style="background-color:#EAEBFF !important;">
         <button type="button" class="close">×</button>
-        <form>
-            <input type="search" placeholder="type keyword(s) here" />
+        <form action="{% url 'search' %}" method="get">
+            <input type="search" placeholder="type keyword(s) here" name="keyword" />
             <button type="submit" class="btn btn-lg btn-golden " >Search</button>
         </form>
     </div>
@@ -621,21 +552,14 @@
                                                 <img src="{{ product.image.url }}" alt="">
                                                 <img src="{{ product.image.url }}" alt="">
                                             </a>
-                                            <div class="tag">
+                                            <!-- <div class="tag">
                                                 <span>sale</span>
-                                            </div>
+                                            </div> -->
                                             <div class="action-link">
                                                 <div class="action-link-left">
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modalAddcart">Add to Cart</a>
+                                                    <a href="{{ product.get_url }}" >View Details</a>
                                                 </div>
-                                                <div class="action-link-right">
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modalQuickview"><i
-                                                            class="icon-magnifier"></i></a>
-                                                    <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                    <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                         <div class="content">
