@@ -8,6 +8,8 @@ from .forms import RegistrationForm
 from .models import Account
 from django.contrib.auth import get_user_model
 from LavenderHaze.utils import send_activation_email,send_forgotpassword_mail
+from carts.models import Cart,CartItem
+from carts.views import _cart_id_
 
 #for email
 from django.contrib.sites.shortcuts import get_current_site
@@ -17,6 +19,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.shortcuts import HttpResponse
+import requests
 # Create your views here.
 
 def signup(request):  
@@ -50,9 +53,34 @@ def signin(request):
         email=request.POST['email']
         password=request.POST['password']
         user=authenticate(request,email=email,password=password)
+        
         if user is not None:
+            try:
+                cart    =   Cart.objects.get(cart_id=_cart_id_(request))
+                is_cart_item_exists =   CartItem.objects.filter(cart=cart).exists()
+
+                if is_cart_item_exists :
+                    cart_item   =   CartItem.objects.filter(cart=cart)
+                   
+                    for item in cart_item:
+                        
+                                item.user=  user
+                                item.save()
+            except:
+
+                pass
             login(request,user)
-            return redirect('ghome')
+            url =   request.META.get('HTTP_REFERER')
+            try:
+                query   =   requests.utils.urlparse(url).query
+                params  =   dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage    =   params['next']
+                    return redirect(nextPage)
+                
+                
+            except:
+                return redirect('ghome')
         else:
             messages.error(request,"Invalid credentials")
             return redirect('signup')

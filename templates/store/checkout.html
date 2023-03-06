@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+   <!-- ...:::: Start Checkout Section:::... -->
+   <div class="checkout-section">
+    <div class="container mt-10" >
+        
+        <!-- Start User Details Checkout Form -->
+        <div class="checkout_form" data-aos="fade-up" data-aos-delay="400">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form action="#" method="POST">
+                        {% csrf_token %}
+                        <h3>Billing Details</h3>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="default-form-box">
+                                    <label>Name</label>
+                                    <input type="text" name="name" class="form-control" required>
+                                </div>
+                            </div>
+                           
+                            <div class="col-lg-6">
+                                <div class="default-form-box">
+                                    <label>Email</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="default-form-box">
+                                    <label>Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="default-form-box">
+                                    <label>Address line 1</label>
+                                    <input type="text" name="address_line_1" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="default-form-box">
+                                    <label>Address line 2</label>
+                                    <input type="text" name="address_line_2" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="default-form-box">
+                                    <label>City</label>
+                                    <input type="text" name="city" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="default-form-box">
+                                    <label>State</label>
+                                    <input type="text" name="state" class="form-control" required >
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <div class="default-form-box">
+                                    <label for="country">Country</label>
+                                    <input type="text" name="country" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                           
+                            
+                       
+                           
+                           
+                        </div>
+                    
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <!-- <form action="#"> -->
+                        <h3>Your order</h3>
+                        <div class="order_table table-responsive">  
+                            <div class="table_desc">
+                                <div class="table_page table-responsive">
+                                    <table>
+                                        <!-- Start Cart Table Head -->
+                                        <thead>
+                                            <tr>
+                                               
+                                                <th class="product_thumb">Image</th>
+                                                <th class="product_name">Product</th>
+                                                <th class="product_quantity">Quantity</th>
+                                                <th class="product_total">Total</th>
+                                            </tr>
+                                        </thead> <!-- End Cart Table Head -->
+                                        <tbody>
+                                            {% for cart_item in cart_items %}
+                                            <!-- Start Cart Single Item-->
+                                            <tr>
+                                                
+                                                <td class="product_thumb"><a href="{{ cart_item.product.get_url }}"><img
+                                                            src="{{ cart_item.product.image.url }}"
+                                                            alt=""></a></td>
+                                                <td class="product_name"><a href="{{ cart_item.product.get_url }}">{{ cart_item.product.product_name }}</a></td>
+                                                
+                                                <td class="product_quantity">
+                                                    <div class="col">
+                                                        <div class="input-group input-spinner">
+                                                           
+                                                            <input value="{{ cart_item.quantity }}" type="text" readonly>
+                                                            
+        
+                                                        </div>
+                                                    </div>
+                                                    
+        
+                                                    </td>
+        
+        
+                                                <td class="product_total">Rs.{{ cart_item.sub_total }}</td>
+                                            </tr> <!-- End Cart Single Item-->
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="cart_submit">
+                                    <button class="btn btn-md btn-golden btn-block" type="submit">Place Order</button>
+                                  </div>
+                                </form>
+                                <div class="cart_submit">
+                                   <a href="{% url 'store'  %}"> <button class="btn btn-md btn-golden btn-block" type="submit">Continue Shopping</button>
+                                  </a> </div>
+                            </div>
+                        </div>
+                   
+                        <div class="payment_method">
+                            <div class="panel-default">
+                                <label class="checkbox-default" for="currencyCod" data-bs-toggle="collapse"
+                                    data-bs-target="#methodCod">
+                                    <input type="checkbox" id="currencyCod">
+                                    <span>Cash on Delivery</span>
+                                </label>
+
+                                <div id="methodCod" class="collapse" data-parent="#methodCod">
+                                    <div class="card-body1">
+                                        <p>Please send a check to Store Name, Store Street, Store Town, Store State
+                                            / County, Store Postcode.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-default">
+                                <label class="checkbox-default" for="currencyPaypal" data-bs-toggle="collapse"
+                                    data-bs-target="#methodPaypal">
+                                    <input type="checkbox" id="currencyPaypal">
+                                    <span>PayPal</span>
+                                </label>
+                                <div id="methodPaypal" class="collapse " data-parent="#methodPaypal">
+                                    <div class="card-body1">
+                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a
+                                            PayPal account.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order_button pt-3">
+                                <button class="btn btn-md btn-black-default-hover" type="submit">Proceed to
+                                    PayPal</button>
+                            </div>
+                        </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div> <!-- Start User Details Checkout Form -->
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -77,6 +77,25 @@
                             <!-- Start Header Action Link -->
                             <ul class="header-action-link action-color--black action-hover-color--golden">
                                
+                                {% if user.id is None %}
+                                <li>
+                                    <a href="{% url 'cart' %}">
+                                        <i style="color: #CC76DA;" class="icon-bag"></i>
+                                        <span style="background-color: #CC76DA;" class="item-count">{{ cart_count }}</span>
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a href="{% url 'signup' %}">
+                                        <i style="color: #CC76DA;" class="icon-user"></i>
+                                        <span style="background-color: #CC76DA;" class="item-count">G</span>
+
+                                        
+                                    </a>
+                                </li>
+                                
+                                {% else %}
+                               
                                 <li>
                                     <a href="{% url 'cart' %}">
                                         <i style="color: #CC76DA;" class="icon-bag"></i>
@@ -89,12 +108,12 @@
                                         
                                     </a>
                                 </li>
+                                {% endif %}
                                 <li>
                                     <a href="#search">
                                         <i style="color: #CC76DA;" class="icon-magnifier"></i>
                                     </a>
-                                </li>
-                                
+                                </li>                                
                                 
                             </ul>
                             <!-- End Header Action Link -->
@@ -128,12 +147,23 @@
                     <!-- Start Mobile Right Side -->
                     <div class="mobile-right-side">
                         <ul class="header-action-link action-color--black action-hover-color--golden">
-                            <!-- <li>
-                                <a href="#search">
-                                    <i style="color: #CC76DA;" class="icon-magnifier"></i>
+                            {% if user.id is None %}
+                            <li>
+                                <a href="{% url 'signup' %}">
+                                    <i style="color: #CC76DA;" class="icon-bag"></i>
+                                    <span style="background-color: #CC76DA;" class="item-count">G</span>
                                 </a>
                             </li>
-                             -->
+                            
+                            <li>
+                                <a href="{% url 'signup' %}">
+                                    <i style="color: #CC76DA;" class="icon-user"></i>
+                                    
+                                </a>
+                            </li>
+                            
+                            {% else %}
+                           
                             <li>
                                 <a href="{% url 'cart' %}">
                                     <i style="color: #CC76DA;" class="icon-bag"></i>
@@ -146,6 +176,13 @@
                                     
                                 </a>
                             </li>
+                            {% endif %}
+                            <li>
+                                <a href="#search">
+                                    <i style="color: #CC76DA;" class="icon-magnifier"></i>
+                                </a>
+                            </li>
+                            
                            
                         </ul>
                     </div>
@@ -154,15 +191,6 @@
             </div>
         </div>
     </div>
-    <!-- Start Offcanvas Search Bar Section -->
-    <div id="search" class="search-modal" style="background-color:#EAEBFF !important;">
-        <button type="button" class="close">×</button>
-        <form action="{% url 'search' %}" method="get">
-            <input type="search" placeholder="type keyword(s) here" name="keyword" />
-            <button type="submit" class="btn btn-lg btn-golden " >Search</button>
-        </form>
-    </div>
-    <!-- End Offcanvas Search Bar Section -->
     {% block content %}
     {% endblock %}
    

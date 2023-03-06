@@ -6,7 +6,7 @@ from store.models import Product
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ghome(request):
-    products=Product.objects.all().filter(is_available=True)
+    products = Product.objects.order_by('-created_at')[:10]
     context =   {
         'products':products,
     }

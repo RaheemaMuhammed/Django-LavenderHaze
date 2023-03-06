@@ -63,7 +63,7 @@
                             <!-- Start Header Logo -->
                             <div class="header-logo">
                                 <div class="logo">
-                                    <a href="index.html"><img src="{% static 'images/logo/logo_black.png' %}" alt=""></a>
+                                    <a href="{% url 'ghome' %}"><img src="{% static 'images/logo/logo_black.png' %}" alt=""></a>
                                 </div>
                             </div>
 
@@ -94,11 +94,12 @@
                     <div class="mobile-header-left" style="display: flex;">
                         <ul class="mobile-menu-logo">
                             <li>
-                                <a href="index.html">
+                                
                                     <div class="logo" style="height: 50px;width: 50px;">
-                                        <img src="{% static 'images/logo/logo_black.png' %}" alt="">
+                                        <a href="{% url 'ghome' %}"><img src="{% static 'images/logo/logo_black.png' %}" alt="">
+                                        </a>
                                     </div>
-                                </a>
+                                
                             </li>
                             
                         </ul>
