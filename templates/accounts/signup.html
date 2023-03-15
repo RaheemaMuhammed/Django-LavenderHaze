@@ -137,7 +137,7 @@
                 <div class="col-lg-6 col-md-6" >
                     <div class="account_form register" data-aos="fade-up" data-aos-delay="200">
                         <h3>SignUp</h3>
-                        <form action="{% url 'signup' %}" method="post"  >
+                        <form action="{% url 'signup' %}" method="POST">
                             {% csrf_token %}
                         
                             <div class="form-outline mb-4">

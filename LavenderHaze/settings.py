@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'category',
     'store',
     'carts',
+    'orders',
+    
     
 ]
 
@@ -147,6 +149,15 @@ EMAIL_HOST_USER='lavenderhaze107@gmail.com'
 EMAIL_HOST_PASSWORD='geigozeiyzaggxzd'
 EMAIL_USE_TLS=True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+#razorpay details
+RAZOR_KEY_ID = 'rzp_test_ZPLCbNJUD304qL'
+
+RAZOR_KEY_SECRET = 'MWpVlgeZ4eyuD5485MyKeSIB'
+
+# Configure session engine
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 
 # Default primary key field type

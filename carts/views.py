@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from store.models import Product
-from . models import Cart,CartItem
+from . models import Cart,CartItem,Coupon,UserCoupon
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,render
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -88,6 +89,10 @@ def remove_cart(request,product_id,cart_item_id):
         pass
     return redirect('cart') 
 
+
+
+
+
 def remove_cart_item(request,product_id,cart_item_id):
     product =  get_object_or_404(Product,id=product_id)
     if request.user.is_authenticated:
@@ -115,11 +120,16 @@ def cart(request,total=0,quantity=0,cart_items=None):
             total +=(cart_item.product.price * cart_item.quantity)
             quantity+=cart_item.quantity
 
-        tax = (3 * total)/100
+        tax = (2 * total)/100
+
+        
         grand_total =   total+tax
 
     except ObjectDoesNotExist:
         pass
+
+
+
 
     context =   {
         'total':total,
@@ -127,6 +137,8 @@ def cart(request,total=0,quantity=0,cart_items=None):
         'cart_items':cart_items,
         'tax':tax,
         'grand_total':grand_total,
+        
+
 
     }
     return render(request,'store/cart.html',context)
@@ -151,6 +163,19 @@ def checkout(request,total=0,quantity=0,cart_items=None):
 
     except ObjectDoesNotExist:
         pass
+    
+    coupons = Coupon.objects.filter(active = True)
+    for item in coupons:
+        try:
+            coupon = UserCoupon.objects.get(user = request.user,coupon = item)
+        except:
+                    coupon = UserCoupon()
+                    coupon.user = request.user
+                    coupon.coupon = item
+                    coupon.save()
+
+    coupons = UserCoupon.objects.filter(user = request.user, used=False) 
+
 
     context =   {
         'total':total,
@@ -158,6 +183,9 @@ def checkout(request,total=0,quantity=0,cart_items=None):
         'cart_items':cart_items,
         'tax':tax,
         'grand_total':grand_total,
+        'coupons':coupons,
+
+
 
     }
     return render(request,'store/checkout.html',context)

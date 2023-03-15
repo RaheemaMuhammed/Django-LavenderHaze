@@ -96,12 +96,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="coupon_code left" data-aos="fade-up" data-aos-delay="200">
-                        <h3>Coupon</h3>
-                        <div class="coupon_inner">
-                            <p>Enter your coupon code if you have one.</p>
-                            <input class="mb-2" placeholder="Coupon code" type="text">
-                            <button type="submit" class="btn btn-md btn-golden">Apply coupon</button>
-                        </div>
+                       
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -110,18 +105,32 @@
                         <div class="coupon_inner">
                             <div class="cart_subtotal">
                                 <p>Subtotal</p>
-                                <p class="cart_amount">{{ total }}</p>
+                                <p class="cart_amount">Rs.{{ total }}</p>
                             </div>
                             <div class="cart_subtotal ">
                                 <p>Tax</p>
                                 <p class="cart_amount">Rs.{{ tax }}</p>
                             </div>
-                            
+                            <div class="cart_amount" id="coupon_block" style="display: none;">
+                                Discount <p>Rs ₹<b id="coupon_discount" class="cart_amount"></b></p>
+                                <h1 class="text-danger" style="font-size: 12px;">*Coupon Applied - <b id="coupon_code"></b></h1>
+                            </div>
+                            {% if coupon_discount  %}
 
                             <div class="cart_subtotal">
-                                <p>Total</p>
+                                    <p>Grand total </p>
+                                    <p id='grand_total' class="cart_amount">₹{{grand_total}}</p>
+                                    <input type="text" name="coupon" id="coupon_code1" style="display: none;">
+                               
+                            </div>
+                            {% else %}
+                            <div class="cart_subtotal ">
+                                <p>Grand Total</p>
                                 <p class="cart_amount">Rs.{{ grand_total }}</p>
                             </div>
+
+
+                            {% endif %}
                             <div class="checkout_btn">
                                 <a href="{% url 'checkout' %}" class="btn btn-md btn-golden">Proceed to Checkout</a>
                             </div>
@@ -130,8 +139,12 @@
                 </div>
             </div>
         </div>
-    </div> <!-- End Coupon Start -->
+    </div>
+     <!-- End Coupon Start -->
 </div>
 {% endif %}
  <!-- ...:::: End Cart Section:::... -->
+
+
+
 {% endblock %}

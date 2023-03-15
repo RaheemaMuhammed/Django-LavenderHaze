@@ -1,15 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Account,UserProfile
-from django.utils.html import format_html
+from .models import Account,EditProfile
 # Register your models here.
 
-class UserProfileAdmin(admin.ModelAdmin):
-    def thumbnail(self,object):
-        return format_html('<img src="{}" width="30" style="border-radius:50%;">'.format(object.profile_picture.url))
+class EditProfileAdmin(admin.ModelAdmin):
 
-    thumbnail.short_description ='Profile Picture'
-    list_display    =   ('thumbnail','user','city','state','country')
+    list_display    =   ('user','city','state','country')
 
 class AccountAdmin(UserAdmin):
     list_display=('email','name','last_login','date_joined','is_active')
@@ -21,4 +17,4 @@ class AccountAdmin(UserAdmin):
     ordering = ('date_joined', )
 
 admin.site.register(Account,AccountAdmin)
-admin.site.register(UserProfile,UserProfileAdmin)
+admin.site.register(EditProfile,EditProfileAdmin)

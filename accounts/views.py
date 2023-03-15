@@ -1,15 +1,18 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm
-from .models import Account
+from .forms import RegistrationForm,UserForm,EditProfileForm,AddressForm
+from .models import Account,EditProfile
 from django.contrib.auth import get_user_model
 from LavenderHaze.utils import send_activation_email,send_forgotpassword_mail
 from carts.models import Cart,CartItem
 from carts.views import _cart_id_
+from orders.models import Order,Address, OrderProduct
+from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+
 
 #for email
 from django.contrib.sites.shortcuts import get_current_site
@@ -33,8 +36,12 @@ def signup(request):
 
             User    =   get_user_model()
             user= User.objects.create_user(name=name,email=email,password=password)
-            user.phone=phone
+            # user.phone=phone
+            setattr(user, 'phone', phone)
             user.save()
+            EditProfile.objects.create(user=user)
+
+
             #sending email-helper function in utils
             send_activation_email(request,user)
             messages.success(request, "We have send you an email ,please verify it")
@@ -111,8 +118,13 @@ def activate(request,uidb64,token):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='signin')
-def profile(request):
-    return render(request,'accounts/profile.html') 
+def dashboard(request):
+    orders  =   Order.objects.order_by('-created_at').filter(user_id=request.user.id,is_ordered=True)
+    orders_count=orders.count()
+    context = {
+        'orders_count' : orders_count
+    }
+    return render(request,'accounts/profile.html',context) 
 
 
 def forgotPassword(request):
@@ -163,6 +175,153 @@ def resetPassword(request):
 
         return render(request,'accounts/resetPassword.html')
 
-
+@login_required(login_url='signin')    
 def edit_profile(request):
-    return render(request,'accounts/edit_profile.html')
+    userprofile = get_object_or_404(EditProfile,user=request.user)
+    if request.method ==  'POST':
+        user_form = UserForm(request.POST,instance=request.user)
+        profile_form = EditProfileForm(request.POST,instance=userprofile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request,'Your Profile has been updated')
+            return redirect('edit_profile')
+        
+    else:
+        user_form=UserForm(instance=request.user)
+        profile_form=EditProfileForm(instance=userprofile)
+
+    context =   {
+        'user_form' : user_form,
+        'profile_form' : profile_form,
+    }
+    return render(request,'accounts/edit_profile.html',context)
+
+
+@login_required(login_url='signin')    
+def my_orders(request):
+    orders  =   Order.objects.filter(user=request.user,is_ordered=True).order_by('-created_at')
+    context =   {
+        'orders' :orders
+    }
+    return render(request,'accounts/my_orders.html',context)
+
+
+@login_required(login_url='signin')    
+def change_password(request):
+    if request.method == 'POST':
+        current_password    =   request.POST['current_password']
+        new_password    =   request.POST['new_password']
+        confirm_password    =   request.POST['confirm_password']
+
+        user    =   Account.objects.get(name__iexact=request.user.name)
+
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request,'Password updated successfully')
+                return redirect('change_password')
+            else:
+                messages.error(request,'Incorrect password')
+                return redirect('change_password')
+        else:
+            messages.error(request,'Please enter valid password')
+            return redirect('change_password')
+
+    return render(request,'accounts/change_password.html')
+
+@login_required(login_url='login')
+def my_address(request):
+   
+
+  current_user = request.user
+  address = Address.objects.filter(user=current_user)
+#   paginator = Paginator(address,3)
+#   page= request.GET.get('page')
+#   paged_address = paginator.get_page(page)
+  
+  context = {
+    'address':address,
+  }
+  return render(request,'accounts/my_address.html',context)
+
+@login_required(login_url='signin')
+def add_address(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST,request.FILES,)
+        if form.is_valid():
+            print('form is valid')
+            detail = Address()
+            detail.user = request.user
+            detail.name =form.cleaned_data['name']
+            detail.phone =  form.cleaned_data['phone']
+            detail.email =  form.cleaned_data['email']
+            detail.address_line_1 =  form.cleaned_data['address_line_1']
+            detail.address_line_2  = form.cleaned_data['address_line_2']
+            detail.state =  form.cleaned_data['state']
+            detail.city =  form.cleaned_data['city']
+            detail.save()
+            messages.success(request,'Address added Successfully')
+            return redirect('my_address')
+        else:
+            messages.success(request,'Form is Not valid')
+            return redirect('my_address')
+    else:
+        form = AddressForm()
+        context={
+            'form':form
+            }   
+    return render(request,'accounts/add_address.html',context)
+
+@login_required(login_url='login')
+def delete_address(request,id):
+    address=Address.objects.get(id = id)
+    messages.success(request,"Address Deleted")
+    address.delete()
+    return redirect('my_address') 
+
+@login_required(login_url='login')
+def edit_address(request, id):
+  address = Address.objects.get(id=id)
+  if request.method == 'POST':
+    form = AddressForm(request.POST, instance=address)
+    if form.is_valid():
+      form.save()
+      messages.success(request , 'Address Updated Successfully')
+      return redirect('my_address')
+    else:
+      messages.error(request , 'Invalid Inputs!!!')
+      return redirect('my_address')
+  else:
+      form = AddressForm(instance=address)
+      
+  context = {
+            'form' : form,
+        }
+  return render(request , 'accounts/edit_address.html' , context)
+
+@login_required(login_url ='login')
+def order_detail(request, order_id):
+    order_detail = OrderProduct.objects.filter(order__order_number=order_id)
+    order = Order.objects.get(order_number=order_id)
+    subtotal = 0
+    for i in order_detail:
+        subtotal += i.product_price * i.quantity
+    context = {
+        'order_detail': order_detail,
+        'order': order,
+        'subtotal': subtotal,
+        
+    }
+    return render(request, 'accounts/order_detail.html', context)
+
+@login_required(login_url='login')
+def user_cancel_order(request, order_number):
+    order = Order.objects.get(order_number=order_number)
+    order.status = 'Cancelled'
+    order.save()
+
+    return render(request, 'accounts/cancel_order.html')

@@ -30,11 +30,12 @@
 
     <!-- Main CSS -->
     <!-- <link rel="stylesheet" href="assets/sass/style.css"> -->
-
+<!-- Bootstrap CSS -->
     <!-- Use the minified version files listed below for better performance and remove the files listed above -->
     <link rel="stylesheet" href="{% static 'css/vendor/vendor.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins/plugins.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+   
 
 </head>
 
@@ -103,7 +104,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'profile' %}">
+                                    <a href="{% url 'dashboard' %}">
                                         <i style="color: #CC76DA;" class="icon-user"></i>
                                         
                                     </a>
@@ -171,7 +172,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'profile' %}">
+                                <a href="{% url 'dashboard' %}">
                                     <i style="color: #CC76DA;" class="icon-user"></i>
                                     
                                 </a>
@@ -194,7 +195,15 @@
     {% block content %}
     {% endblock %}
    
-   
+       <!-- Start Offcanvas Search Bar Section -->
+       <div id="search" class="search-modal" style="background-color:#EAEBFF !important;">
+        <button type="button" class="close">×</button>
+        <form action="{% url 'search' %}" method="get">
+            <input type="search" placeholder="type keyword(s) here" name="keyword" />
+            <button type="submit" class="btn btn-lg btn-golden " >Search</button>
+        </form>
+    </div>
+    <!-- End Offcanvas Search Bar Section -->
    
    <!-- Start Footer Section -->
    <footer style="background-color: #fef5fe;" class="footer-section footer-bg section-top-gap-100">
@@ -298,26 +307,7 @@
 <button class="material-scrolltop" type="button"></button>
 
 
-<!-- Start Modal Quickview cart -->
-                                <!-- Start Large Image -->
-                               
-                                <!-- End Large Image -->
-                                <!-- Start Thumbnail Image -->
-                               
-                                    <!-- Add Arrows -->
-                                    
-                            
-                                <!-- Start  Product Details Text Area-->
-                                 <!-- End  Product Details Text Area-->
-                                <!-- Start Product Variable Area -->
-                                    <!-- Product Variable Single Item -->
-                                                   
-                                    <!-- Product Variable Single Item -->
-                                    <!-- End Product Variable Area -->
-                                
-                                <!-- Start  Product Details Social Area-->
-                               <!-- End  Product Details Social Area-->
-                             <!-- End Modal Quickview cart -->
+
 
 <!-- ::::::::::::::All JS Files here :::::::::::::: -->
 <!-- Global Vendor, plugins JS -->
@@ -344,8 +334,28 @@
 <script src="{% static 'js/vendor/vendor.min.js' %}"></script>
 <script src="{% static 'js/plugins/plugins.min.js' %}"></script>
 
+
 <!-- Main JS -->
 <script src="{% static 'js/main.js' %}"></script>
+
+<!-- razorpay jquer -->
+<!-- <script src="{% static 'js/payment.js' %}"></script> -->
+
+
+
+<!-- jquery for checkout modal  -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+integrity="sha512-ny/zJL/iJ+NL2I9XOa7HwiFqdRi2IwB+NZ8WtYQRbq3qTHtjqloKvZZ9Tgz7tgJDM+PksRJb+sh2aDKtOYiV9Q=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+
+
+
+
 </body>
 
 

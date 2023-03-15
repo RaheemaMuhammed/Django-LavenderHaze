@@ -55,7 +55,7 @@
                                 {% if single_product.stock <= 0 %}
                                 <h3><b> Out of stock </b></h3>
                                 {% else %}
-                                <a href="{% url 'cart' %}" class="btn  btn btn-black-default-hover">View Cart</a>
+                                <a href="{% url 'cart' %}" class="btn btn-block btn-lg btn-black-default-hover">View Cart</a>
                                 <a href="{% url 'add_cart' single_product.id  %}" class="btn btn-block btn-lg btn-black-default-hover">+ Add To Cart</a>
                                 {% endif %}
                             </div>
@@ -100,18 +100,7 @@
                             <!-- Start Product Details Tab Content Singel -->
                             <div class="tab-pane active show" id="description">
                                 <div class="single-tab-content-item">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue
-                                        nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi
-                                        ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate
-                                        adipiscing cursus eu, suscipit id nulla. </p>
-                                    <p>Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem,
-                                        quis fermentum turpis eros eget velit. Donec ac tempus ante. Fusce ultricies
-                                        massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero
-                                        hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet,
-                                        consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus
-                                        nisi posuere nisl, in accumsan elit odio quis mi. Cras neque metus,
-                                        consequat et blandit et, luctus a nunc. Etiam gravida vehicula tellus, in
-                                        imperdiet ligula euismod eget</p>
+                                    <p>{{ single_product.description }}</p>
                                 </div>
                             </div> <!-- End Product Details Tab Content Singel -->
                             <!-- Start Product Details Tab Content Singel -->
