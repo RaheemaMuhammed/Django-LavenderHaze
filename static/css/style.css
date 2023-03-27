@@ -89,16 +89,6 @@
     box-sizing: border-box;
 }
 
-.offcanvas-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: #f2f2f2;
-    text-align: center;
-    padding: 20px;
-  }
-
-
 body {
     margin: 0;
     font-family: "Open Sans", sans-serif;
@@ -266,10 +256,6 @@ sup {
 a {
     color: #0D6EFD;
     text-decoration: underline;
-}
-button:hover {
-    background-color:D43DB3 !important ;
-
 }
 a:hover {
     color: #024dbc;

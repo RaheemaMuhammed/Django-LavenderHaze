@@ -62,8 +62,7 @@
                                     <ul>
                                         {% for category in links %}
                                         <li class="has-dropdown">
-                                            <a class="active main-menu-link" style="color: #51135c;" href="{{ category.get_url }}">{{ category.category_name }}<i
-                                                    class="fa fa-angle-down"></i></a>
+                                            <a class="active main-menu-link" style="color: #51135c;" href="{{ category.get_url }}">{{ category.category_name }}</a>
                                            
                                         </li>
                                        {% endfor %}
@@ -128,7 +127,7 @@
     <!-- Start Header Area -->
 
     <!-- Start Mobile Header -->
-    <div class="mobile-header mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
+    <div style="background-color:#EAEBFF !important;" class="mobile-header mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
         <div class="container">
             <div class="row">
                 <div class="col-12 d-flex align-items-center justify-content-between">
@@ -152,7 +151,8 @@
                             {% if user.id is None %}
                             <li>
                                 <a href="{% url 'signup' %}">
-                                    <i style="color: #CC76DA;" class="icon-bag"></i>
+                                    <i style="color: #CC76DA;" class="icon-bag">
+                                    </i>
                                     <span style="background-color: #CC76DA;" class="item-count">G</span>
                                 </a>
                             </li>
@@ -284,7 +284,7 @@
                     <div class="col-auto mb-6">
                         <div class="footer-copyright">
                             <p class="copyright-text">&copy; 2023  Made with <i
-                                    class="fa fa-heart text-danger"></i> by Raheema
+                                    class="fa fa-heart text-danger"></i> by <strong>Raheema</strong> 
                                     </p>
 
                         </div>

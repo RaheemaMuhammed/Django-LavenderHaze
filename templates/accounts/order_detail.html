@@ -37,16 +37,16 @@
                             <!-- col-lg-12 start here -->
                             <div class="invoice-details mt25">
                                 <div class="well">
-                                    <ul class="list-unstyled mb0">
+                                    <ul class="list-unstyled mb-0">
                                         <li><strong>Order</strong> #{{order.order_number}}</li>
                                         <li><strong>Transaction</strong> {{order.payment.payment_id}}</li>
                                         <li><strong>Order Date:</strong> {{order.created_at}}</li>
-                                        <li><strong>Status:</strong><span class="text-info font-weight-bold">{{ order.status }}</span></li>
+                                        <li><strong>Status:</strong><span class="text-info font-weight-bold"> {{ order.status }}</span></li>
                                     </ul>
                                 </div>
                             </div>
                            
-                            <div class="invoice-items">
+                            <div class="invoice-items mt-4" >
                                 <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
                                     <table class="table table-bordered">
                                         <thead>
@@ -67,7 +67,9 @@
                                               </tr>
                                             {% endfor %}
                                         </tbody>
-                                        <tfoot>
+                                        
+                                        <tfoot >
+
                                             <tr>
                                                 <th colspan="2" class="text-right">Sub Total:</th>
                                                 <th class="text-center">₹{{subtotal}}</th>
@@ -99,15 +101,13 @@
         </div>
 
         {% if order.status == 'New' or order.status == 'Accepted' %}
-        <a href="{% url 'user_cancel_order' order.order_number %}" onclick="return confirm('Are you sure want to cancel this order?')" class="btn btn-md btn-golden">Cancel Order</a>
+        <a href="{% url 'user_cancel_order' order.order_number %}" onclick="return confirm('Are you sure want to cancel this order?')" class="btn btn-md btn-golden" style="width: fit-content !important;">Cancel Order</a>
         
         {% endif %}
         <!-- col-lg-12 end here -->
     </div>
     </div>
-    <div class="cart_submit" style="margin-left: 40%;margin-right: 40%;">
-        <a href="{% url 'store'  %}"> <button class="btn btn-md btn-golden" type="submit">Continue Shopping</button>
-       </a> </div>
+  
 
 
 

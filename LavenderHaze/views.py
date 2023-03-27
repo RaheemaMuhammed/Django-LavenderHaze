@@ -11,3 +11,7 @@ def ghome(request):
         'products':products,
     }
     return render(request,'ghome.html',context)
+
+
+def handle_404(request, exception):
+    return render(request, '404.html', status=404)

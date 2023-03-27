@@ -5,6 +5,7 @@ from .models import Order,Address
 from accounts.models import EditProfile
 from carts.models import Coupon,UserCoupon
 from django.http import JsonResponse
+from django.db import IntegrityError
 
 import datetime
 import razorpay
@@ -28,18 +29,26 @@ def payments(request,total=0):
     current_user    =   request.user
     cart_item       =   CartItem.objects.filter(user=current_user)
 
+
+
     tax  =  0
     grand_total     = 0
 
     for item in cart_item:
         total+= (item.product.price * item.quantity)
 
-    tax = (2 * total) / 100
-    grand_total =   total+tax
-    print(grand_total)
-    print(type(grand_total) )
+    # tax = (2 * total) / 100
 
     order_number    =   request.session['order_number']
+
+    order_total = Order.objects.get(user=current_user,order_number=order_number)
+    grand_total  =  order_total.order_total 
+    try:
+
+       coupon_discount = order_total.order_discout
+    except:
+        coupon_discount=0
+    tax = order_total.tax
     order = Order.objects.get(user=current_user,is_ordered=False,order_number=order_number)
 
     currency = 'INR'
@@ -68,10 +77,9 @@ def payments(request,total=0):
             'total': total,
             'tax': tax,
             'grand_total': grand_total,
-            
+            'coupon_discount':coupon_discount,
             'payment': response_payment,
             'razorpay_merchant_key':RAZOR_KEY_ID,
-            'grand_total': grand_total,
         }        
 
     
@@ -90,24 +98,24 @@ def place_order(request,total=0,quantity=0):
     grand_total =   0
     tax =   0
     for cart_item in cart_items:
-        total += int((cart_item.product.price * cart_item.quantity))
+        total += (cart_item.product.price * cart_item.quantity)
         quantity+=cart_item.quantity
 
-    tax = int((2 * total)/100)
+    tax = (2 * total)/100
     coupon_discount = 0
 
-    grand_total =  int(total+tax) 
-    grand_total = format(grand_total, '.2f')
+    grand_total =  total+tax
+    # grand_total = format(grand_total, '.2f')
    
-
-    # response_payment    =   razorpay_client.order.create(dict(amount=int(grand_total)* 100,currency=currency))
 
     if request.method == 'POST':
 
         form = OrderForm(request.POST)
         if form.is_valid():
-            # coupon_code = request.POST['coupon']
-            coupon_code =  request.POST.get('coupon', None)
+            try:
+              coupon_code = request.session['coupon_code']
+            except:
+                pass
 
 
             #store the details in order table
@@ -125,7 +133,20 @@ def place_order(request,total=0,quantity=0):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            Address.objects.create(user=current_user,name=data.name ,phone=data.phone,email=data.email, address_line_1=data.address_line_1,address_line_2=data.address_line_2,city=data.city,state=data.state,country=data.country)
+            try:
+                Address.objects.create(
+                    user=current_user,
+                    name=data.name ,
+                    phone=data.phone,
+                    email=data.email,
+                    address_line_1=data.address_line_1,
+                    address_line_2=data.address_line_2,
+                    city=data.city,
+                    state=data.state,
+                    country=data.country)
+            except IntegrityError:
+                pass
+
             #generate order number
             yr  =   int(datetime.date.today().strftime('%Y'))
             dt  =   int(datetime.date.today().strftime('%d'))
@@ -135,71 +156,39 @@ def place_order(request,total=0,quantity=0):
             order_number    =   current_date + str(data.id)
             data.order_number   =   order_number
             data.save()
-        try:
-            instance = UserCoupon.objects.get(user=request.user, coupon__code=coupon_code)
-
-            if float(grand_total) >= float(instance.coupon.min_value):
-                coupon_discount = (
-                    (float(grand_total) * float(instance.coupon.discount))/100)
-                grand_total =int(float(grand_total) - coupon_discount) 
-                print('inside if')
-                grand_total = format(grand_total, '.2f')
-                print('inside if after nthooo')
-                coupon_discount = int(float(coupon_discount)) #format(coupon_discount, '.2f')
-
-            data.order_total = grand_total
-            data.order_discount = coupon_discount
-            data.save()
-
-        except:
-            pass   
-            grand_total= float(grand_total)        
-            grand_total= int(grand_total)        
-            print(type(grand_total))
 
 
 
+            # FOR COUPON 
+            try:
+                instance = UserCoupon.objects.get(user=request.user, coupon__code=coupon_code)
+
+                if float(grand_total) >= float(instance.coupon.min_value):
+                    coupon_discount = (
+                        (float(grand_total) * float(instance.coupon.discount))/100)
+                    grand_total =float(grand_total) - coupon_discount
+        
+                    grand_total = format(grand_total, '.2f')
+            
+                    coupon_discount = format(coupon_discount, '.2f')
+
+
+                data.order_total = grand_total
+                data.order_discout = coupon_discount
+                data.save()
+
+            except:
+                pass   
             order   = Order.objects.get(user=current_user,is_ordered=False,order_number=order_number)
-               # razorpAY CONTENT TO TEST
-            currency = 'INR'
-            razorpay_client =  razorpay.Client(auth=(RAZOR_KEY_ID,RAZOR_KEY_SECRET)) 
+         
 
-            response_payment    =   razorpay_client.order.create(dict(amount=int(grand_total)* 100,currency=currency))
-            print(response_payment)
-            order_id    =   response_payment['id']
-            order_status    =   response_payment['status']
+     
 
-            if order_status == 'created':
-                payDetails  =   Payment(
-                    user = current_user,
-                    order_id    =   order_id,
-                    order_number    =   order_number,
-                    amount_paid =   grand_total
-
-                )
-                payDetails.save()     
-
-
-
-
-
-
-            context =   {
-                'order' : order,
-                'cart_items' : cart_items,
-                'total': total,
-                'tax': tax,
-                'coupon_discount': coupon_discount,
-                'payment': response_payment,
-                'razorpay_merchant_key':RAZOR_KEY_ID,
-                'grand_total' : grand_total
-
-            }   
             request.session['order_number'] = order_number
-            # print(f"order no : ${request.session['order_number']}")
+            
+            
 
-
-            return render(request,'orders/payments.html',context)
+            return redirect('payments')
         else:
              return redirect('checkout')
                 
@@ -226,6 +215,7 @@ def payment_success(request):
         
         tax = (2 * total)/100
         grand_total = total + tax
+        
         
         #Order Confirmmation Mail
         
@@ -273,7 +263,6 @@ def payment_status(request):
         razorpay_client = razorpay.Client(
         auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
         client = razorpay_client
-        print('hellooo')
 
         try:
             status = client.utility.verify_payment_signature(params_dict)
@@ -281,7 +270,6 @@ def payment_status(request):
             transaction.status = status
             transaction.payment_id = response['razorpay_payment_id']
             transaction.save()
-            print('insidetryblock')
 
             # get order number
             order_number = transaction.order_number
@@ -290,7 +278,6 @@ def payment_status(request):
             order.payment = transaction
             order.is_ordered = True
             order.save()
-            print('did it save')
 
             cart_items = CartItem.objects.filter(user=order.user)
             for item in cart_items:
@@ -303,22 +290,18 @@ def payment_status(request):
                 order_product.product_price = item.product.price
                 order_product.ordered = True
                 order_product.save()
-                print('did something happened?')
 
                 # Reducing Stock
                 product = Product.objects.get(id=item.product_id)
                 product.stock -= item.quantity
                 product.save()
-                print('did it save')
 
                 #  Clearing Cart Items
                 cart_item = CartItem.objects.get(id=item.id)
                 order_product = OrderProduct.objects.get(id=order_product.id)
                 order_product.save()
-                print('did it clear')
             
             CartItem.objects.filter(user=order.user).delete()
-            print('iam above you')
 
             return redirect('payment_success')
 
@@ -354,4 +337,8 @@ def coupons(request):
                'coupon_discount':coupon_discount,
                'coupon_code':coupon_code,
                 }
+    try:
+        request.session['coupon_code'] = coupon_code
+    except:
+        pass
     return JsonResponse(response)

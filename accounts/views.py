@@ -11,9 +11,14 @@ from LavenderHaze.utils import send_activation_email,send_forgotpassword_mail
 from carts.models import Cart,CartItem
 from carts.views import _cart_id_
 from orders.models import Order,Address, OrderProduct
+from store.models import Product
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+from LavenderHaze.settings import RAZOR_KEY_ID,RAZOR_KEY_SECRET
+import razorpay
+from orders.models import Payment
+from django.urls import reverse
 
-
+from razorpay.errors import BadRequestError
 #for email
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -237,16 +242,18 @@ def change_password(request):
 def my_address(request):
    
 
-  current_user = request.user
-  address = Address.objects.filter(user=current_user)
-#   paginator = Paginator(address,3)
-#   page= request.GET.get('page')
-#   paged_address = paginator.get_page(page)
+    current_user = request.user
+    address = Address.objects.filter(user=current_user)
+    Address.objects.filter(user=current_user).order_by('id')
+
+
+   
+
   
-  context = {
-    'address':address,
-  }
-  return render(request,'accounts/my_address.html',context)
+    context = {
+        'address':address,
+    }
+    return render(request,'accounts/my_address.html',context)
 
 @login_required(login_url='signin')
 def add_address(request):
@@ -320,8 +327,33 @@ def order_detail(request, order_id):
 
 @login_required(login_url='login')
 def user_cancel_order(request, order_number):
-    order = Order.objects.get(order_number=order_number)
-    order.status = 'Cancelled'
-    order.save()
+    try:
+        order = Order.objects.get(order_number=order_number)
+        payment = Payment.objects.get(order_number=order_number)
+        amount = order.order_total
+        payment_id = payment.payment_id
+        print(payment_id)
 
-    return render(request, 'accounts/cancel_order.html')
+        client = razorpay.Client(auth=(RAZOR_KEY_ID,RAZOR_KEY_SECRET))
+        print(client)
+        client.payment.refund(payment_id, {
+            "amount": amount,
+            "speed": "instant",
+        })
+       
+
+        order.status = 'Cancelled'
+        order.save()
+        # adding items back to store
+        order_products=OrderProduct.objects.filter(user=request.user,order=order)
+        for order_product in order_products:
+            product= Product.objects.get(id=order_product.product)
+            product.stock += order_product.quantity
+            product.save()
+
+        messages.success(request, 'Your order has been cancelled and a refund has been initiated.')
+        return render(request,'accounts/cancel_order.html')
+
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect('my_orders')

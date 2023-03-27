@@ -35,14 +35,17 @@ class Address(models.Model):
         return f"{self.address_line_1} {self.address_line_2}"
 
     def __str__(self):
-        return self.name 
+        return self.name
+    class Meta:
+        unique_together = ('address_line_1', 'address_line_2') 
     
 class Order(models.Model):
     STATUS = (
-        ('New','New'),
+        
         ('Accepted','Accepted'),
         ('Completed','Completed'),
         ('Cancelled','Cancelled'),
+        ('Returned','Returned'),
 
     )
     
@@ -58,10 +61,13 @@ class Order(models.Model):
     state           =   models.CharField(max_length=50)   
     city            =   models.CharField(max_length=50)
     order_total     =   models.FloatField()
+    order_discout     =   models.FloatField(null=True)
     tax             =   models.FloatField()
     status          =   models.CharField(max_length=10,choices=STATUS,default='Pending')
     ip              =   models.CharField(blank=True,max_length=20)
     is_ordered      =   models.BooleanField(default=False)
+ 
+
     created_at      =   models.DateTimeField(auto_now_add=True)
     updated_at      =   models.DateTimeField(auto_now=True,blank=True)  
 

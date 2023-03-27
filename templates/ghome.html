@@ -45,11 +45,11 @@
                                 <ul>
                                     {% for category in links %}
                                     <li class="has-dropdown">
-                                        <a class="active main-menu-link" style="color: #51135c;" href="{{category.get_url}}">{{ category.category_name }}<i
-                                                class="fa fa-angle-down"></i></a>
+                                        <a class="active main-menu-link" style="color: #51135c;" href="{{category.get_url}}">{{ category.category_name }}</a>
                                        
                                     </li> 
                                     {% endfor %}
+                                    
                                   
                                     <li>
                                         <a href="#" style="color: #51135c;" >About Us</a>
@@ -143,20 +143,20 @@
                           
                             {% if user.id is None %}
                             <li>
-                                <a href="{% url 'signup' %}" class="offcanvas-toggle">
+                                <a href="{% url 'signup' %}" >
                                     <i style="color: #CC76DA;" class="icon-user"></i>
                                     <span style="background-color: #CC76DA;" class="item-count">G</span>
                                 </a>
                             </li>
                             {% else %}
                             <li>
-                                <a href="{% url 'cart' %}" class="offcanvas-toggle">
+                                <a href="{% url 'cart' %}" >
                                     <i style="color: #CC76DA;" class="icon-bag"></i>
                                     <span style="background-color: #CC76DA;" class="item-count">{{ cart_count }}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'dashboard' %}" class="offcanvas-toggle">
+                                <a href="{% url 'dashboard' %}" >
                                     <i style="color: #CC76DA;" class="icon-user"></i>
          
                                 </a>
@@ -300,9 +300,9 @@
                                 <div class="col-auto">
                                     <div class="hero-slider-content">
                                         <h4 class="subtitle"></h4>
-                                        <h2  class="title">India's <b style="color: #CC76DA;">No.1</b> <br>Online nursery </h2>
+                                        <h2  class="title">India's <b style="color: #CC76DA;">No.1</b> <br>Online Nursery </h2>
                                         <a href="{% url 'store' %}"
-                                            class="btn btn-lg btn-outline-golden">shop now </a>
+                                            class="btn btn-lg btn-outline-golden">Shop Now </a>
                                     </div>
                                 </div>
                             </div>
@@ -364,9 +364,9 @@
                             <div class="content">
                                 <h4 class="title">Indoor Plants</h4>
                                 <h5 class="sub-title">We design your home</h5>
-                                <a href="#"
+                                <a href="{% url 'store' %}"
                                     class="btn btn-lg btn-outline-golden icon-space-left"><span
-                                        class="d-flex align-items-center">discover now <i
+                                        class="d-flex align-items-center">Discover Now <i
                                             class="ion-ios-arrow-thin-right"></i></span></a>
                             </div>
                         </div>
@@ -385,7 +385,7 @@
                                     <div class="content">
                                         <h4 class="title">Garden <br>
                                             Decor</h4>
-                                        <a href="#" class="link-text"><span>Shop
+                                        <a href="{% url 'store' %}" class="link-text"><span>Shop
                                                 now</span></a>
                                     </div>
                                 </div>
@@ -401,7 +401,7 @@
                                     <div class="content">
                                         <h4 class="title">Medicinal <br>
                                             Plants</h4>
-                                        <a href="#" class="link-text"><span>Shop
+                                        <a href="{% url 'store' %}" class="link-text"><span>Shop
                                                 now</span></a>
                                     </div>
                                 </div>
@@ -417,7 +417,7 @@
                                     <div class="content">
                                         <h4 class="title">Fertilizers<br>
                                             </h4>
-                                        <a href="#" class="link-text"><span>Shop
+                                        <a href="{% url 'store' %}" class="link-text"><span>Shop
                                                 now</span></a>
                                     </div>
                                 </div>
@@ -433,7 +433,7 @@
                                     <div class="content">
                                         <h4> ceramic<br>
                                           pots  </h4>
-                                        <a href="#"><span>Shop now</span></a>
+                                        <a href="{% url 'store' %}"><span>Shop now</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -625,7 +625,7 @@
                         <div class="col-auto mb-6">
                             <div class="footer-copyright">
                                 <p class="copyright-text">&copy; 2023  Made with <i
-                                        class="fa fa-heart text-danger"></i> by Raheema
+                                        class="fa fa-heart text-danger"></i> by <strong>Raheema</strong> 
                                         </p>
 
                             </div>

@@ -18,6 +18,10 @@ from django.urls import path,include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+
+
+handler404 = views.handle_404
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.ghome,name='ghome'),
@@ -25,4 +29,5 @@ urlpatterns = [
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
     path('orders/', include('orders.urls')),
+    path('adminpanel/', include('adminpanel.urls')),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
