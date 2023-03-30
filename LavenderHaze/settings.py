@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%^lr13mv#ex9*a#lnv8-0(y9sb&qc#19(yqmar3tbhi5hw$5f0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.53.217.120', 'lavenderhaze.online']
+ALLOWED_HOSTS = ['13.53.217.120', 'lavenderhaze.online','localhost']
 CSRF_TRUSTED_ORIGINS = ['https://lavenderhaze.online']
 CORS_ORIGIN_WHITELIST = ['https://lavenderhaze.online']
 

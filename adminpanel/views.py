@@ -171,7 +171,7 @@ def adminproduct(request):
 @login_required(login_url='admin_login')  
 def admin_addproducts(request):
      if request.user.is_admin:
-          if request.method== 'POST':
+          if request.method == 'POST':
                form = ProductForm(request.POST,request.FILES)
                if form.is_valid():
                     form.save()

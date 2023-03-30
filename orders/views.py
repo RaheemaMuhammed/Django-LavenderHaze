@@ -55,7 +55,6 @@ def payments(request,total=0):
     razorpay_client =  razorpay.Client(auth=(RAZOR_KEY_ID,RAZOR_KEY_SECRET)) 
 
     response_payment    =   razorpay_client.order.create(dict(amount=int(grand_total)* 100,currency=currency))
-    print(response_payment)
     order_id    =   response_payment['id']
     order_status    =   response_payment['status']
 
