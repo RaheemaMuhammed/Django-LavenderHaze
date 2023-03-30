@@ -49,7 +49,7 @@ def admin_home(request):
      
 
           number_of_users  = Account.objects.filter(is_admin = False).count()
-          print('user',number_of_users )
+        
 
     
 
@@ -115,7 +115,7 @@ def admin_userlist(request):
           if request.method == 'POST':
                search = request.POST['search']
                users = Account.objects.filter(Q(name__icontains=search) |  Q(email__icontains=search) ).order_by('id')
-               print('helloo')
+           
           
           else:
                users = Account.objects.filter(is_admin=False).order_by('id')
