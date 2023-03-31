@@ -54,7 +54,7 @@ def payments(request,total=0):
     currency = 'INR'
     razorpay_client =  razorpay.Client(auth=(RAZOR_KEY_ID,RAZOR_KEY_SECRET)) 
 
-    response_payment    =   razorpay_client.order.create(dict(amount=int(grand_total)* 100,currency=currency))
+    response_payment    =   razorpay_client.order.create(dict(amount=grand_total* 100,currency=currency))
     order_id    =   response_payment['id']
     order_status    =   response_payment['status']
 
@@ -218,16 +218,7 @@ def payment_success(request):
         
         #Order Confirmmation Mail
         
-        current_site = get_current_site(request)
-        mail_subject = "Order Confirmation"
-        message = render_to_string('orders/order_confirmation.html', {
-        'order': order,
-        'domain': current_site
-        })
-        to_mail = order.user.email
-        send_email = EmailMessage(mail_subject, message, to=[to_mail])
-        send_email.send()
-        messages.success(request, 'Order confirmation mail has been send to your registered email address')
+   
 
         context = {
             'order': order,

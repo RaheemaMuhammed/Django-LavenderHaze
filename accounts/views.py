@@ -332,13 +332,13 @@ def user_cancel_order(request, order_number):
         payment = Payment.objects.get(order_number=order_number)
         amount = order.order_total
         payment_id = payment.payment_id
-        print(payment_id)
+     
 
         client = razorpay.Client(auth=(RAZOR_KEY_ID,RAZOR_KEY_SECRET))
-        print(client)
+       
         client.payment.refund(payment_id, {
-            "amount": amount,
-            "speed": "instant",
+            # "amount": amount,
+            "speed": "normal",
         })
        
 
