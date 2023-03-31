@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =config('SECRET_KEY') 
+SECRET_KEY = 'django-insecure-%^lr13mv#ex9*a#lnv8-0(y9sb&qc#19(yqmar3tbhi5hw$5f0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',cast=bool,default=True)
+DEBUG = False
 
 ALLOWED_HOSTS = ['13.53.217.120', 'lavenderhaze.online','localhost']
 CSRF_TRUSTED_ORIGINS = ['https://lavenderhaze.online']
@@ -156,19 +156,19 @@ MESSAGE_TAGS = {
 }
 
 #SMTP CONFIGURATION
-EMAIL_HOST=config('EMAIL_HOST')
-EMAIL_PORT=config('EMAIL_PORT',cast=int)
-EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS=config('EMAIL_USE_TLS',cast=bool)
-EMAIL_USE_SSL=config('EMAIL_USE_SSL',cast=bool)
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='raheema1712@gmail.com'
+EMAIL_HOST_PASSWORD='bwdgpbmednpixqsp'
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 #razorpay details
-RAZOR_KEY_ID = config('RAZOR_KEY_ID')
+RAZOR_KEY_ID = 'rzp_test_ZPLCbNJUD304qL'
 
-RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')
+RAZOR_KEY_SECRET = 'MWpVlgeZ4eyuD5485MyKeSIB'
 
 # Configure session engine
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
