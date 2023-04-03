@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from adminpanel.forms import ProductForm,CategoryForm,Update_CategoryForm,Update_ProductForm,CouponForm
 from category.models import Category
 from store.models import Product,ReviewRating
-from orders.models import Order, Payment
+from orders.models import Order, Payment,OrderProduct
 from carts.models import Coupon
 from datetime import datetime,timedelta,date
 from django.db.models.functions import Cast
@@ -334,9 +334,18 @@ def update_order(request,id):
 @never_cache
 @login_required(login_url='admin_login')
 def adminorder_detail(request,id):
-     order=Order.objects.get(id=id)
+   
+
+     
+
+     print(id)
+     products = OrderProduct.objects.filter(order__order_number=id)
+     order=Order.objects.get(order_number=id)
+   
+     
      context = {
-          'order': order
+          'order': order,
+          'products':products,
      }
      return render(request,'admin/adminorder_detail.html',context)
 
