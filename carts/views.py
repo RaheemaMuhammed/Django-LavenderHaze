@@ -12,8 +12,14 @@ from django.http import JsonResponse
 def _cart_id_(request):
     cart    =   request.session.session_key
     if not cart:
-        cart=request.session.create()
+        cart = request.session.session_key
+        if not cart:
+            request.session.cycle_key()  # Generate a new session key
+        request.session['cart_id'] = cart  # Store the cart ID in the session
     return cart
+    # if not cart:
+    #     cart=request.session.create()
+    # return cart
 
 def add_cart(request,product_id):
     current_user=request.user
