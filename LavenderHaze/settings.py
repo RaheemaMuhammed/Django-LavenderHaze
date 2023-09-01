@@ -31,7 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['13.53.217.120', 'lavenderhaze.online','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://lavenderhaze.online']
 CORS_ORIGIN_WHITELIST = ['https://lavenderhaze.online']
 
