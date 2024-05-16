@@ -137,7 +137,7 @@ def place_order(request,total=0,quantity=0):
                     user=current_user,
                     name=data.name ,
                     phone=data.phone,
-                    email=data.email,
+                   
                     address_line_1=data.address_line_1,
                     address_line_2=data.address_line_2,
                     city=data.city,
