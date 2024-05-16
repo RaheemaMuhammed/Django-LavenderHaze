@@ -139,7 +139,7 @@ USE_TZ = True
 MEDIA_URL   =   '/media/'
 
 STATIC_URL = "/static/"
-if os.getenv('DEBUG'):
+if DEBUG:
     
 
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
