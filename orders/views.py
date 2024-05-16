@@ -318,7 +318,7 @@ def coupons(request):
                     instance.used = True
                     instance.save()
             else:
-                msg='This coupon is only applicable for orders more than ₹'+ str(instance.coupon.min_value)+ '\- only!'
+                msg='This coupon is only applicable for orders more than ₹'+ str(instance.coupon.min_value)+ 'only!'
         except:
                 msg = 'Coupon is not valid'
     response = {
