@@ -16,7 +16,7 @@ def send_activation_email(request, user):
         'token': default_token_generator.make_token(user),
     })
     to_email = user.email
-    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email = EmailMessage(subject=mail_subject, body=message, to=[to_email])
     send_email.send()
 
 def send_forgotpassword_mail(request,user,email):
@@ -29,5 +29,5 @@ def send_forgotpassword_mail(request,user,email):
                 'token':default_token_generator.make_token(user),
             })
             to_email=email
-            send_email=EmailMessage(mail_subject,message,to=[to_email])
+            send_email=EmailMessage(subject=mail_subject,body=message,to=[to_email])
             send_email.send()
