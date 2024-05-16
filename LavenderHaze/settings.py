@@ -31,9 +31,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://lavenderhaze.online']
-CORS_ORIGIN_WHITELIST = ['https://lavenderhaze.online']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='localhost').split(',')
+CSRF_TRUSTED_ORIGINS =os.getenv('CSRF_TRUSTED_ORIGINS', default='localhost').split(',') 
+CORS_ORIGIN_WHITELIST = os.getenv('CORS_ORIGIN_WHITELIST', default='localhost').split(',')
 
 
 
