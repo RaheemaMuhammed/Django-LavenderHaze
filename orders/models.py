@@ -21,7 +21,6 @@ class Address(models.Model):
     user = models.ForeignKey(Account,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)
-    email = models.EmailField(max_length=50)
     address_line_1 = models.CharField(max_length=50)
     address_line_2 = models.CharField(max_length=50,null=True)
     state =   models.CharField(max_length=50)

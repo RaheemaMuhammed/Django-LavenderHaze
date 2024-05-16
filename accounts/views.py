@@ -159,7 +159,7 @@ def resetpassword_validate(request,uidb64,token):
     else:
         messages.error(request,"This link has been expired")
         return redirect('signin')
-@login_required(login_url='signin')
+# @login_required(login_url='signin')
 def resetPassword(request):
     if request.method=='POST':
         password=request.POST['password']
@@ -206,7 +206,9 @@ def edit_profile(request):
 
 @login_required(login_url='signin')    
 def my_orders(request):
+    print(request.user)
     orders  =   Order.objects.filter(user=request.user,is_ordered=True).order_by('-created_at')
+    print(orders)
     context =   {
         'orders' :orders
     }

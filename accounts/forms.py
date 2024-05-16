@@ -31,7 +31,7 @@ class EditProfileForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields=['name','phone','email','address_line_1','address_line_2','country','state','city']
+        fields=['name','phone','address_line_1','address_line_2','country','state','city']
         
     
     def __init__(self, *args, **kwargs):
